@@ -1,6 +1,4 @@
 const { Schema, model } = require('mongoose');
-//library for Date objects
-const { DateTime } = require('luxon');
 
 //User Schema
 const UserSchema = new Schema({
