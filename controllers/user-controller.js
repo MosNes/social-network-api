@@ -4,15 +4,15 @@ const userController = {
     //get all users
     getAllUsers(req, res) {
         User.find({})
-        //do not return version data
-        .select('-__v')
-        //sort in descending order, returning most recent users first
-        .sort({ _id: -1 })
-        .then(userData => res.json(userData))
-        .catch(err => {
-            console.log(err);
-            res.status(500).json(err);
-        });
+            //do not return version data
+            .select('-__v')
+            //sort in descending order, returning most recent users first
+            .sort({ _id: -1 })
+            .then(userData => res.json(userData))
+            .catch(err => {
+                console.log(err);
+                res.status(500).json(err);
+            });
     },
     //get single user by ID and populate thought and friend data
     getUserById({ params }, res) {
@@ -31,7 +31,7 @@ const userController = {
             .then(userData => {
                 //if no user found
                 if (!userData) {
-                    res.status(404).json( {message: 'No user found with this id'});
+                    res.status(404).json({ message: 'No user found with this id' });
                     return;
                 }
                 res.json(userData);
@@ -52,6 +52,39 @@ const userController = {
             });
     },
     //update user by id
-    
+    updateUser({ params, body }, res) {
+        User.findOneAndUpdate(
+            { _id: params.id },
+            body,
+            { new: true, runValidators: true }
+        )
+            .then(userData => {
+                //if no user found
+                if (!userData) {
+                    res.status(404).json({ message: 'No user found with this id' });
+                    return;
+                }
+                res.json(userData);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(400).json(err);
+            });
+    },
     //delete user by id
+    deleteUser({ params }, res) {
+        User.findOneAndDelete({ _id: params.id })
+            .then(userData => {
+                //if no user found
+                if (!userData) {
+                    res.status(404).json({ message: 'No user found with this id' });
+                    return;
+                }
+                res.json(userData);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(400).json(err);
+            });
+    }
 }
