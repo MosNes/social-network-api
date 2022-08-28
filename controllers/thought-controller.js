@@ -94,7 +94,7 @@ const thoughtController = {
     //create reaction
     createReaction({ params, body }, res) {
         Thought.findByIdAndUpdate(
-            params.thoughtId,
+            params.id,
             { $push: { reactions: body } },
             { new: true, runValidators: true }
         )
@@ -113,7 +113,7 @@ const thoughtController = {
     //delete reaction by ID
     deleteReaction({ params }, res) {
         Thought.findByIdAndUpdate(
-            params.thoughtId,
+            params.id,
             { $pull: { reactions: { reactionId: params.reactionId } } },
             { new: true }
         )
@@ -130,3 +130,5 @@ const thoughtController = {
             });
     }
 }
+
+module.exports = thoughtController;
