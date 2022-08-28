@@ -5,3 +5,5 @@ const dateFormat = function(inputDate) {
     // MM/DD/YY 1:30 PM
     return inputDate.toLocaleString(DateTime.DATETIME_SHORT);
 };
+
+module.exports = dateFormat;
