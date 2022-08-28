@@ -17,7 +17,7 @@ router
 
 // /api/thoughts/:id GET thought by ID, POST a reaction to a thought, Update thought by ID, Delete thought by ID
 router
-    .route('/:id')
+    .route('/:thoughtId')
     .get(getThoughtByID)
     .post(createReaction)
     .put(updateThought)
@@ -25,7 +25,7 @@ router
 
 // /api/thoughts/:id/:reactionId
 router
-    .route('/:id/:reactionId')
+    .route('/:thoughtId/:reactionId')
     .delete(deleteReaction);
 
 module.exports = router;

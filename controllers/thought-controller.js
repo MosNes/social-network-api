@@ -16,7 +16,7 @@ const thoughtController = {
     },
     //get thought by ID
     getThoughtByID({ params }, res) {
-        Thought.findOne({ _id: params.id })
+        Thought.findOne({ _id: params.thoughtId })
             .select('-__v')
             .then(thoughtData => {
                 //if no pizza is found,  send 404
@@ -59,7 +59,7 @@ const thoughtController = {
     //update thought by ID
     updateThought({ params, body }, res) {
         Thought.findByIdAndUpdate(
-            params.id,
+            params.thoughtId,
             //expects "thoughtText": "text", "username": "user", "userId": "id"
             body,
             { new: true, runValidators: true }
@@ -78,7 +78,7 @@ const thoughtController = {
     },
     //delete thought by ID
     deleteThought({ params }, res) {
-        Thought.findByIdAndDelete(params.id)
+        Thought.findByIdAndDelete(params.thoughtId)
             .then(thoughtData => {
                 if (!thoughtData) {
                     res.status(404).json({ message: 'No Thought found with that ID' });
@@ -94,7 +94,7 @@ const thoughtController = {
     //create reaction
     createReaction({ params, body }, res) {
         Thought.findByIdAndUpdate(
-            params.id,
+            params.thoughtId,
             { $push: { reactions: body } },
             { new: true, runValidators: true }
         )
@@ -113,7 +113,7 @@ const thoughtController = {
     //delete reaction by ID
     deleteReaction({ params }, res) {
         Thought.findByIdAndUpdate(
-            params.id,
+            params.thoughtId,
             { $pull: { reactions: { reactionId: params.reactionId } } },
             { new: true }
         )
