@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 //library for Date objects
 const { DateTime } = require('luxon');
 const dateFormat = require('../utils/dateFormat');
