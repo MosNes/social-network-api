@@ -13,7 +13,33 @@ const userController = {
             console.log(err);
             res.status(500).json(err);
         });
-    }
+    },
     //get single user by ID and populate thought and friend data
+    getUserById({ params }, res) {
+        User.findOne({ _id: params.id })
+            .select('-__v')
+            //also return attached thoughts
+            .populate({
+                path: 'thoughts',
+                select: '-__v'
+            })
+            //also return attached friends
+            .populate({
+                path: 'friends',
+                select: '-__v'
+            })
+            .then(userData => {
+                //if no user found
+                if (!userData) {
+                    res.status(404).json( {message: 'No user found with this id'});
+                    return;
+                }
+                res.json(userData);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(400).json(err);
+            });
+    },
     //create new user
 }
