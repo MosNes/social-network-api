@@ -37,7 +37,7 @@ const thoughtController = {
         Thought.create(body)
             //then take the _id of the newly created thought and push it
             //to the user's thoughts array
-            .then(({_id}) => {
+            .then(({ _id }) => {
                 return User.findOneAndUpdate(
                     { _id: body.userId },
                     { $push: { thoughts: _id } },
@@ -45,8 +45,8 @@ const thoughtController = {
                 );
             })
             .then(thoughtData => {
-                if(!thoughtData) {
-                    res.status(404).json( { message: 'No Thought found with that ID' });
+                if (!thoughtData) {
+                    res.status(404).json({ message: 'No Thought found with that ID' });
                     return;
                 }
                 res.json(thoughtData);
@@ -58,15 +58,15 @@ const thoughtController = {
     },
     //update thought by ID
     updateThought({ params, body }, res) {
-        Thought.findByIdAndUpdate( 
+        Thought.findByIdAndUpdate(
             params.id,
             //expects "thoughtText": "text", "username": "user", "userId": "id"
             body,
             { new: true, runValidators: true }
-            )
+        )
             .then(thoughtData => {
-                if(!thoughtData) {
-                    res.status(404).json( { message: 'No Thought found with that ID' });
+                if (!thoughtData) {
+                    res.status(404).json({ message: 'No Thought found with that ID' });
                     return;
                 }
                 res.json(thoughtData);
@@ -79,19 +79,54 @@ const thoughtController = {
     //delete thought by ID
     deleteThought({ params }, res) {
         Thought.findByIdAndDelete(params.id)
-        .then(thoughtData => {
-            if(!thoughtData) {
-                res.status(404).json( { message: 'No Thought found with that ID' });
-                return;
-            }
-            res.json( {message: `Thought Deleted!`});
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json(err);
-        });
-    }
-
+            .then(thoughtData => {
+                if (!thoughtData) {
+                    res.status(404).json({ message: 'No Thought found with that ID' });
+                    return;
+                }
+                res.json({ message: `Thought Deleted!` });
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json(err);
+            });
+    },
     //create reaction
+    createReaction({ params, body }, res) {
+        Thought.findByIdAndUpdate(
+            params.thoughtId,
+            { $push: { reactions: body } },
+            { new: true, runValidators: true }
+        )
+            .then(thoughtData => {
+                if (!thoughtData) {
+                    res.status(404).json({ message: 'No Thought found with that ID' });
+                    return;
+                }
+                res.json(thoughtData);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json(err);
+            });
+    },
     //delete reaction by ID
+    deleteReaction({ params }, res) {
+        Thought.findByIdAndUpdate(
+            params.thoughtId,
+            { $pull: { reactions: { reactionId: params.reactionId } } },
+            { new: true }
+        )
+            .then(thoughtData => {
+                if (!thoughtData) {
+                    res.status(404).json({ message: 'No Thought found with that ID' });
+                    return;
+                }
+                res.json(thoughtData);
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json(err);
+            });
+    }
 }
