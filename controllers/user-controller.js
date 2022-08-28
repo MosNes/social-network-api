@@ -42,4 +42,16 @@ const userController = {
             });
     },
     //create new user
+    createUser({ body }, res) {
+        //expects "username": "user", "email": "user@user.com"
+        User.create(body)
+            .then(userData => res.json(userData))
+            .catch(err => {
+                console.log(err);
+                res.status(400).json(err);
+            });
+    },
+    //update user by id
+    
+    //delete user by id
 }
