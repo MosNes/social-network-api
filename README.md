@@ -1,7 +1,7 @@
 # Social Network API
 
   ## Badges
-  \  
+  
   ![social-network-api](https://img.shields.io/github/languages/top/MosNes/social-network-api)
 
   ![social-network-api](https://img.shields.io/github/languages/count/MosNes/social-network-api)
